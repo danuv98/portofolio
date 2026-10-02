@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="danu — Cybersecurity student. A portfolio that behaves like a Unix terminal." />
+  <title>danu — terminal portfolio</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='20' fill='%2350fa7b' text-anchor='middle'%3E%3E_%3C/text%3E%3C/svg%3E" />
+
+  <!-- Set the title from content.js so it only ever lives in one file. -->
+  <script>document.title = (window.CONTENT && CONTENT.meta.pageTitle) || document.title;</script>
+  <script src="content.js"></script>
+</head>
+
+<body>
+  <!-- Decorative only: hidden from assistive tech, removed under reduced motion. -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <div class="crt-scanlines" aria-hidden="true"></div>
+
+  <main class="terminal" id="terminal">
+    <!-- Scrollable transcript of everything that has been printed. -->
+    <div
+      class="screen"
+      id="screen"
+      role="log"
+      aria-live="off"
+      aria-label="Terminal output"
+    ></div>
+
+    <!--
+      The prompt line. The input is a real <input>, so mobile keyboards,
+      dictation and screen readers all behave normally.
+    -->
+    <div class="promptline">
+      <span class="prompt" id="prompt" aria-hidden="true"></span>
+
+      <span class="field">
+        <span class="measure" id="measure" aria-hidden="true"></span>
+        <input
+          id="input"
+          class="input"
+          type="text"
+          autocomplete="off"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+          enterkeyhint="send"
+          aria-label="Terminal input"
+        />
+        <span class="cursor" id="cursor" aria-hidden="true"></span>
+      </span>
+    </div>
+
+    <!-- Tappable shortcuts. Populated from CONTENT.quickCommands. -->
+    <nav class="chips" id="chips" aria-label="Command shortcuts"></nav>
+
+    <!-- Screen-reader channel. The transcript itself is aria-live="off" so the
+         typing animation does not narrate character by character; instead this
+         status line receives the finished text of each command. -->
+    <p class="sr-only" id="live" role="status" aria-live="polite"></p>
+  </main>
+
+  <noscript>
+    <div class="noscript">
+      <p><strong>danu</strong> — Cybersecurity student</p>
+      <p>
+        This portfolio is an interactive terminal and needs JavaScript.
+        Reach me at <a href="https://github.com/danuv98">github.com/danuv98</a>.
+      </p>
+    </div>
+  </noscript>
+
+  <script src="terminal.js"></script>
+</body>
+</html>

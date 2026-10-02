@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editor / OS noise
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# There is no build step here, but if you ever add tooling, keep it out of git.
+node_modules/
+
+# Scratch file: your own ASCII banner sketch, saved from TextEdit.
+# Not part of the site, so it stays out of git. Remove this line if you
+# decide you want it tracked.
+banner.rtf
+
+# NOTE: resume.pdf is intentionally NOT ignored.
+# The `resume` command links to it, and GitHub Pages only publishes files
+# that are committed, so it has to be tracked for the link to work.
