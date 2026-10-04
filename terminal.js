@@ -963,8 +963,11 @@
 
   function clearScreen() {
     screenGen += 1;              // abandon anything still queued for the old screen
-    screenEl.replaceChildren();
+    screenEl.replaceChildren(promptLineEl);
     said.length = 0;
+    pending = 0;
+    state.skip = false;
+    state.typing = false;
     scrollToEnd();
   }
 
