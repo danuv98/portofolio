@@ -20,14 +20,16 @@ window.CONTENT = {
     pageTitle: 'danu — terminal portfolio',
   },
 
-  /* ASCII banner, one string per line. 5 rows, block letters.
-     Keep lines the same width or the art will shear. */
+  /* ASCII banner, one string per line: 7 rows of hand-drawn line art.
+     Keep every line the same width or the art will shear. */
   banner: [
-    '███  ███ ███  █  █',
-    '█  █ █  █ █ ██ █  █',
-    '█  █ ████ █  █ █  █',
-    '█  █ █  █ █  █ █  █',
-    '███  ███ █  █  ██ ',
+    "                                    ,--.",
+    "   ,--.                         .-,|  |,-.",
+    " ,-|  | ,--,--.,--,--, ,--.,--. _\\ '  ' /_",
+    "' .-. |' ,-.  ||      \\|  ||  |(__      __)",
+    "\\ `-' |\\ '-'  ||  ||  |'  ''  '  / .  . \\",
+    " `---'  `--`--'`--''--' `----'  `-'|  |`-'",
+    "                                   `--'",
   ],
 
   /* Printed under the banner. Keep it short. */
@@ -36,12 +38,9 @@ window.CONTENT = {
     'Type `help` for the command list, or tap a chip below on mobile.',
   ],
 
-  /* Shown at the bottom of every `help` output. */
-  helpFooter: [
-    'Tip: Tab completes commands and file names. Ctrl+L clears the screen.',
-    'Tip: Up/Down arrows walk through your command history.',
-    'Tip: Escape leaves the input so Tab can reach the links above.',
-  ],
+  /* Shown at the bottom of every `help` output. Intentionally empty: the tips
+     were removed on request. Add strings here if you want them back. */
+  helpFooter: [],
 
   /* ------------------------------------------------------------------ about */
   about: {
@@ -76,8 +75,7 @@ window.CONTENT = {
       ],
       stack: ['PLACEHOLDER', 'PLACEHOLDER'],
       links: [
-        { label: 'source', url: 'https://github.com/danuv98' },   // PLACEHOLDER
-        { label: 'write-up', url: 'https://github.com/danuv98' }, // PLACEHOLDER
+        { label: 'github', url: 'https://github.com/danuv98' },
       ],
     },
     {
@@ -91,7 +89,7 @@ window.CONTENT = {
       ],
       stack: ['PLACEHOLDER'],
       links: [
-        { label: 'source', url: 'https://github.com/danuv98' },   // PLACEHOLDER
+        { label: 'github', url: 'https://github.com/danuv98' },
       ],
     },
     {
@@ -113,29 +111,19 @@ window.CONTENT = {
   skills: [
     {
       group: 'Languages',
-      items: ['PLACEHOLDER', 'PLACEHOLDER', 'PLACEHOLDER'],
-    },
-    {
-      group: 'Security',
-      items: ['PLACEHOLDER', 'PLACEHOLDER', 'PLACEHOLDER'],
-    },
-    {
-      group: 'Tools',
-      items: ['PLACEHOLDER', 'PLACEHOLDER'],
+      items: ['PLACEHOLDER', 'PLACEHOLDER', 'PLACEHOLDER', 'Russian', 'English', 'Romanian'],
     },
     {
       group: 'Learning',
-      items: ['PLACEHOLDER', 'PLACEHOLDER'],
+      items: ['UTM Cybersecurity', 'PLACEHOLDER'],
     },
   ],
 
   /* ---------------------------------------------------------------- contact */
   /* `url` is optional for plain text rows; email rows may use a bare address. */
   contact: [
-    { label: 'email',    value: 'placeholder@example.com', url: 'mailto:placeholder@example.com' }, // PLACEHOLDER
-    { label: 'github',   value: 'github.com/danuv98',       url: 'https://github.com/danuv98' },
-    { label: 'instagram', value: 'instagram.com/danuv98',    url: 'https://instagram.com/danuv98' },
-    { label: 'linkedin', value: 'PLACEHOLDER — linkedin.com/in/yourhandle', url: '' }, // PLACEHOLDER
+    { label: 'github',   value: 'github.com/danuv98',    url: 'https://github.com/danuv98' },
+    { label: 'instagram', value: 'instagram.com/danuv98', url: 'https://instagram.com/danuv98' },
   ],
 
   /* ----------------------------------------------------------------- resume */
@@ -161,7 +149,6 @@ window.CONTENT = {
       answer: [
         'Wake up, danu...',
         'The portfolio has you. Follow the white rabbit.',
-        '(you can switch back with `theme dracula`)',
       ],
     },
     exit: {

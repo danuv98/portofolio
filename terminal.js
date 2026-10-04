@@ -301,7 +301,7 @@
         li.appendChild(body);
         ul.appendChild(li);
       });
-      return { box: wrap(ul), mode: 'stagger' };
+      return { box: wrap(ul), mode: 'type', host: ul };
     },
     kv: (b) => {
       const dl = el('dl', 'kv');
@@ -312,12 +312,12 @@
         dl.appendChild(dt);
         dl.appendChild(dd);
       });
-      return { box: wrap(dl), mode: 'stagger' };
+      return { box: wrap(dl), mode: 'type', host: dl };
     },
     tags: (b) => {
       const box = el('div', 'tags');
       b.items.forEach((t) => box.appendChild(el('span', 'tag', t)));
-      return { box: wrap(box), mode: 'stagger' };
+      return { box: wrap(box), mode: 'type', host: box };
     },
     table: (b) => {
       const nums = b.nums || [];
@@ -339,10 +339,10 @@
         tbody.appendChild(tr);
       });
       t.appendChild(tbody);
-      return { box: wrap(t), mode: 'stagger' };
+      return { box: wrap(t), mode: 'type', host: t };
     },
     spacer: () => ({ box: el('div', 'spacer'), mode: 'none' }),
-    raw: (b) => ({ box: b.node, mode: 'stagger' }),
+    raw: (b) => ({ box: b.node, mode: 'type', host: b.node }),
   };
 
   /* Text version of a block, used for the screen-reader status line. */
@@ -383,7 +383,10 @@
     return out;
   }
 
-  /* Reveal the host's existing content a couple of characters per tick.
+  /* Reveal the host's existing content one character at a time, continuously.
+     Every block type goes through here — text, lists, tags and tables alike —
+     so output streams the whole way instead of appearing bar by bar.
+
      Working on the already-built DOM (rather than assigning textContent) means
      links and coloured spans survive the animation.
      `gen` is the screen generation this output belongs to: if the screen is
@@ -396,35 +399,28 @@
     const total = full.reduce((a, s) => a + s.length, 0);
     if (!total) return;
 
+    // Steady cadence for short output; quicker for long files so `cat` of a
+    // big document doesn't crawl. Never a chunk bigger than one character.
+    const delay = total > 300 ? 1 : total > 120 ? 2 : 6;
+
     nodes.forEach((n) => { n.data = ''; });
 
-    for (let i = 2; i < total && !state.skip && gen === screenGen; i += 2) {
+    let shown = 0;
+    for (let i = 1; i <= total && !state.skip && gen === screenGen; i++) {
+      shown = i;
       let rem = i;
       for (let k = 0; k < nodes.length && rem > 0; k++) {
         const take = Math.min(rem, full[k].length);
         nodes[k].data = full[k].slice(0, take);
         rem -= take;
       }
-      scrollToEnd();
-      await sleep(5);
+      if (i % 12 === 0) scrollToEnd();
+      await sleep(delay);
     }
 
     // Restore the full text whether we finished, were skipped, or were cut off.
     nodes.forEach((n, k) => { n.data = full[k]; });
     scrollToEnd();
-  }
-
-  async function staggerIn(box, gen) {
-    const kids = Array.from(box.children);
-    if (!kids.length) return;
-    if (motionOff() || state.skip) return;
-    kids.forEach((k) => k.classList.add('stagger'));
-    for (const k of kids) {
-      if (state.skip) { k.classList.remove('stagger'); continue; }
-      k.classList.remove('stagger');
-      await sleep(16);
-    }
-    if (gen !== screenGen) kids.forEach((k) => k.classList.remove('stagger'));
   }
 
   async function emit(block, gen) {
@@ -433,8 +429,7 @@
     screenEl.appendChild(made.box);
     scrollToEnd();
     try {
-      if (made.mode === 'type') await typeDom(made.host, gen);
-      else if (made.mode === 'stagger') await staggerIn(made.box, gen);
+      if (made.mode !== 'none') await typeDom(made.host, gen);
     } finally {
       scrollToEnd();
     }
@@ -740,7 +735,7 @@
         { text: 'cat ~/about.txt', sub: 'the filesystem mirrors these commands' },
         { text: 'cd ~/projects && ls', sub: 'directories work too' },
         { text: 'project 1', sub: 'a single project' },
-        { text: 'theme matrix', sub: 'switch the palette' },
+        { text: 'theme', sub: 'show the colour theme' },
       ]));
 
       out.push(B.spacer());
@@ -840,9 +835,7 @@
   /* --- themes and motion --------------------------------------------------- */
 
   const THEMES = [
-    { name: 'dracula', note: 'purple and cyan on deep indigo' },
-    { name: 'matrix', note: 'green on black' },
-    { name: 'amber', note: 'warm amber on near-black' },
+    { name: 'github', note: 'GitHub dark, canvas #0d1117' },
   ];
   const STORE = 'portfolio.theme';
   const currentTheme = () => document.documentElement.getAttribute('data-theme');
@@ -857,7 +850,7 @@
     group: 'util',
     usage: 'theme [name]',
     args: '[name]',
-    desc: 'switch colour theme',
+    desc: 'show the colour theme',
     completeArg() { return THEMES.map((t) => t.name); },
     run(args) {
       const name = args[0];
@@ -868,7 +861,7 @@
             text: t.name,
             sub: t.name === currentTheme() ? '(current) — ' + t.note : t.note,
           }))),
-          B.text('Switch with `theme matrix`, `theme amber` or `theme dracula`.', 'dim'),
+          B.text('One scheme: the palette is fixed. Set it with `theme github`.', 'dim'),
         ];
       }
       if (!THEMES.some((t) => t.name === name)) {
@@ -936,8 +929,11 @@
     hidden: true,
     desc: '',
     run() {
-      setTheme('matrix');
-      return [...C.eggs.matrix.answer.map((l) => B.text(l, 'green')), B.text('Theme set to matrix.', 'dim')];
+      // The palette is fixed now, so this no longer repaints the screen.
+      return [
+        ...C.eggs.matrix.answer.map((l) => B.text(l, 'green')),
+        B.text('(the colours stay GitHub dark — one scheme only now)', 'dim'),
+      ];
     },
   });
 
