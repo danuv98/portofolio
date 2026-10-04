@@ -586,7 +586,7 @@
     name: 'contact',
     group: 'info',
     usage: 'contact',
-    desc: 'email and social links',
+    desc: 'my social links',
     run() {
       return [
         B.text('contact', 'accent'),

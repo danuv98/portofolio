@@ -120,7 +120,7 @@ window.CONTENT = {
   ],
 
   /* ---------------------------------------------------------------- contact */
-  /* `url` is optional for plain text rows; email rows may use a bare address. */
+  /* `url` is optional for plain text rows; it is omitted for rows with no link. */
   contact: [
     { label: 'github',   value: 'github.com/danuv98',    url: 'https://github.com/danuv98' },
     { label: 'instagram', value: 'instagram.com/danuv98', url: 'https://instagram.com/danuv98' },
