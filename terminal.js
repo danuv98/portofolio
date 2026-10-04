@@ -21,6 +21,7 @@
 
   /* ------------------------------------------------------------------ dom */
   const screenEl = document.getElementById('screen');
+  const promptLineEl = document.getElementById('promptline');
   const promptEl = document.getElementById('prompt');
   const fieldEl = document.querySelector('.field');
   const inputEl = document.getElementById('input');
@@ -162,16 +163,6 @@
       .join('\n');
   }
 
-  function resumeText() {
-    return [
-      C.resume.label,
-      '',
-      C.resume.url,
-      '',
-      C.resume.note,
-    ].join('\n');
-  }
-
   function projectDoc(p) {
     const out = [
       p.name,
@@ -212,7 +203,6 @@
     'about.txt': file(aboutText()),
     'skills.txt': file(skillsText()),
     'contact.txt': file(contactText()),
-    'resume.txt': file(resumeText()),
     'projects': dir(projectFiles),
   });
 
@@ -426,7 +416,7 @@
   async function emit(block, gen) {
     const made = RENDER[block.type](block);
     if (gen !== screenGen) return;
-    screenEl.appendChild(made.box);
+    screenEl.insertBefore(made.box, promptLineEl);
     scrollToEnd();
     try {
       if (made.mode !== 'none') await typeDom(made.host, gen);
@@ -516,14 +506,13 @@
     run() {
       const rows = C.projects.map((p) => [
         String(p.id),
-        { text: p.name, sub: '(' + p.status + ')' },
+        { text: p.name, url: p.links[0] && p.links[0].url, sub: '(' + p.status + ')' },
         p.summary,
         { text: p.stack.join(', ') },
       ]);
       return [
         B.text('projects', 'accent'),
         B.table(['#', 'name', 'summary', 'stack'], rows, [true, false, false, false]),
-        B.text('Use `project <n>` for details.', 'dim'),
       ];
     },
   });
@@ -592,21 +581,6 @@
         B.text('contact', 'accent'),
         B.spacer(),
         B.kv(C.contact.map((r) => [r.label, r.url ? { text: r.value, url: r.url } : { text: r.value }])),
-      ];
-    },
-  });
-
-  cmd({
-    name: 'resume',
-    group: 'info',
-    usage: 'resume',
-    desc: 'link to my CV',
-    run() {
-      return [
-        B.text('resume', 'accent'),
-        B.spacer(),
-        B.list([{ text: C.resume.label, url: C.resume.url }]),
-        B.text(C.resume.note, 'dim'),
       ];
     },
   });
@@ -729,19 +703,6 @@
         );
       });
 
-      out.push(B.text('examples', 'purple'));
-      out.push(B.list([
-        { text: 'ls -l', sub: 'long listing' },
-        { text: 'cat ~/about.txt', sub: 'the filesystem mirrors these commands' },
-        { text: 'cd ~/projects && ls', sub: 'directories work too' },
-        { text: 'project 1', sub: 'a single project' },
-        { text: 'theme', sub: 'show the colour theme' },
-      ]));
-
-      out.push(B.spacer());
-      C.helpFooter.forEach((f) => out.push(B.text(f, 'dim')));
-      out.push(B.spacer());
-      out.push(B.text('There are a few commands that are not listed here. Good luck.', 'dim'));
       return out;
     },
   });
@@ -776,7 +737,6 @@
     run() {
       return [
         B.text(C.meta.user, 'green'),
-        B.text('A guest on ' + C.meta.name + "'s portfolio. Type `contact` to reach the real person.", 'dim'),
       ];
     },
   });
@@ -861,7 +821,6 @@
             text: t.name,
             sub: t.name === currentTheme() ? '(current) — ' + t.note : t.note,
           }))),
-          B.text('One scheme: the palette is fixed. Set it with `theme github`.', 'dim'),
         ];
       }
       if (!THEMES.some((t) => t.name === name)) {
@@ -1013,7 +972,7 @@
 
   function runLine(raw) {
     const line = raw.trim();
-    screenEl.appendChild(echoLine(raw));
+    screenEl.insertBefore(echoLine(raw), promptLineEl);
     scrollToEnd();
 
     if (!line) return;
@@ -1221,7 +1180,7 @@
           skipAnimation();
           inputEl.value = '';
           updateCursor();
-          screenEl.appendChild(echoLine('^C'));
+          screenEl.insertBefore(echoLine('^C'), promptLineEl);
         }
         return;
 
@@ -1281,15 +1240,11 @@
   buildChips();
   updateCursor();
 
-  /* Banner + welcome, typed out on first load. */
-  say([
-    B.banner(C.banner.join('\n')),
-    B.spacer(),
-    ...C.welcome.map((l) => B.text(l)),
-    B.spacer(),
-    B.text('Type `help` and press enter.', 'accent'),
-    B.text('Tip: press any key to skip this animation.', 'dim'),
-  ]);
+  /* Banner and welcome share one typing stream in the transcript. */
+  const intro = el('div', 'block');
+  intro.appendChild(el('pre', 'banner', C.banner.join('\n')));
+  C.welcome.forEach((line) => intro.appendChild(el('div', 'line', line)));
+  say([B.raw(intro)]);
 
   inputEl.focus();
 

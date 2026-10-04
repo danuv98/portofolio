@@ -8,7 +8,7 @@
   <title>danu — terminal portfolio</title>
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='20' fill='%2350fa7b' text-anchor='middle'%3E%3E_%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d1117'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='20' fill='%233fb950' text-anchor='middle'%3E%3E_%3C/text%3E%3C/svg%3E" />
 
   <!-- Set the title from content.js so it only ever lives in one file. -->
   <script>document.title = (window.CONTENT && CONTENT.meta.pageTitle) || document.title;</script>
@@ -21,37 +21,32 @@
   <div class="crt-scanlines" aria-hidden="true"></div>
 
   <main class="terminal" id="terminal">
-    <!-- Scrollable transcript of everything that has been printed. -->
+    <!-- Scrollable transcript, including the prompt that follows its output. -->
     <div
       class="screen"
       id="screen"
       role="log"
       aria-live="off"
       aria-label="Terminal output"
-    ></div>
-
-    <!--
-      The prompt line. The input is a real <input>, so mobile keyboards,
-      dictation and screen readers all behave normally.
-    -->
-    <div class="promptline">
-      <span class="prompt" id="prompt" aria-hidden="true"></span>
-
-      <span class="field">
-        <span class="measure" id="measure" aria-hidden="true"></span>
-        <input
-          id="input"
-          class="input"
-          type="text"
-          autocomplete="off"
-          autocapitalize="none"
-          autocorrect="off"
-          spellcheck="false"
-          enterkeyhint="send"
-          aria-label="Terminal input"
-        />
-        <span class="cursor" id="cursor" aria-hidden="true"></span>
-      </span>
+    >
+      <div class="promptline" id="promptline">
+        <span class="prompt" id="prompt" aria-hidden="true"></span>
+        <span class="field">
+          <span class="measure" id="measure" aria-hidden="true"></span>
+          <input
+            id="input"
+            class="input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="send"
+            aria-label="Terminal input"
+          />
+          <span class="cursor" id="cursor" aria-hidden="true"></span>
+        </span>
+      </div>
     </div>
 
     <!-- Tappable shortcuts. Populated from CONTENT.quickCommands. -->

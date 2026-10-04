@@ -4,24 +4,20 @@
    Every piece of text on this site lives here. terminal.js reads from this
    object; it contains no logic worth editing.
 
-   Search this file for  PLACEHOLDER  to find everything you still need to fill
-   in. Nothing breaks if a placeholder is left in place — it just shows up
-   on screen as-is, so you can see the layout before the real content lands.
+   Update the content in this file to personalize the portfolio.
    ============================================================================ */
 
 window.CONTENT = {
   /* ---------------------------------------------------------------- basics */
   meta: {
     name: 'danu',
-    tagline: 'Cybersecurity student',          // PLACEHOLDER: your one-liner
+    tagline: 'Cybersecurity student',
     host: 'portfolio',                        // appears in the prompt
     user: 'guest',                            // appears in the prompt
-    location: 'PLACEHOLDER — your city, country',
     pageTitle: 'danu — terminal portfolio',
   },
 
-  /* ASCII banner, one string per line: 7 rows of hand-drawn line art.
-     Keep every line the same width or the art will shear. */
+  /* ASCII banner transcribed from banner.rtf. */
   banner: [
     "                                    ,--.",
     "   ,--.                         .-,|  |,-.",
@@ -30,7 +26,7 @@ window.CONTENT = {
     "\\ `-' |\\ '-'  ||  ||  |'  ''  '  / .  . \\",
     " `---'  `--`--'`--''--' `----'  `-'|  |`-'",
     "                                   `--'",
-  ],
+  ].map((line, index) => (index === 0 ? line.slice(1) : line) + ' '.repeat([5, 2, 2, 1, 3, 2, 5][index])),
 
   /* Printed under the banner. Keep it short. */
   welcome: [
@@ -38,71 +34,34 @@ window.CONTENT = {
     'Type `help` for the command list, or tap a chip below on mobile.',
   ],
 
-  /* Shown at the bottom of every `help` output. Intentionally empty: the tips
-     were removed on request. Add strings here if you want them back. */
-  helpFooter: [],
-
   /* ------------------------------------------------------------------ about */
   about: {
     heading: 'About',
     /* An array of paragraphs. Empty strings become blank lines. */
     paragraphs: [
-      "Hi, I'm danu. PLACEHOLDER: two or three sentences about who you are and what you're currently studying or building.",
-      'PLACEHOLDER: what you enjoy about security — the kind of thing you would happily spend a whole Saturday on.',
-      'PLACEHOLDER: what you are looking for right now (an internship, a mentorship, collaborators on a project).',
+      "Hi, I'm danu, a cybersecurity student.",
+      'I am studying cybersecurity at UTM and building my knowledge in the field.',
     ],
     facts: [
-      ['Role', 'PLACEHOLDER — Cybersecurity student'],
-      ['Focus', 'PLACEHOLDER — e.g. network security, web app security'],
-      ['Learning', 'PLACEHOLDER — e.g. OSCP, TryHackMe, university coursework'],
-      ['Status', 'Open to PLACEHOLDER — internships / freelance / collaboration'],
+      ['Role', 'Cybersecurity student'],
+      ['Learning', 'UTM Cybersecurity'],
     ],
   },
 
   /* --------------------------------------------------------------- projects */
-  /* Numbered by position. `projects` lists them, `project 1` shows one.
-     `id` must be a number; it is the index used in the `project <n>` command. */
+  /* GitHub profile where the project repositories are published. */
   projects: [
     {
       id: 1,
-      name: 'PLACEHOLDER project one',
-      status: 'in progress',                     // e.g. in progress / shipped / archived
+      name: 'GitHub repositories',
+      status: 'published',
       year: '2026',
-      summary: 'PLACEHOLDER: one sentence on what it does.',
-      description: [
-        'PLACEHOLDER: a short paragraph. What problem does it solve, who is it for, what did you build yourself?',
-        'PLACEHOLDER: anything interesting you learned or got stuck on while building it.',
-      ],
-      stack: ['PLACEHOLDER', 'PLACEHOLDER'],
+      summary: 'Browse my projects on GitHub.',
+      description: ['My projects and source code are available on my GitHub profile.'],
+      stack: [],
       links: [
         { label: 'github', url: 'https://github.com/danuv98' },
       ],
-    },
-    {
-      id: 2,
-      name: 'PLACEHOLDER project two',
-      status: 'shipped',
-      year: '2025',
-      summary: 'PLACEHOLDER: one sentence on what it does.',
-      description: [
-        'PLACEHOLDER: a short paragraph about the problem and your approach.',
-      ],
-      stack: ['PLACEHOLDER'],
-      links: [
-        { label: 'github', url: 'https://github.com/danuv98' },
-      ],
-    },
-    {
-      id: 3,
-      name: 'PLACEHOLDER project three',
-      status: 'shipped',
-      year: '2024',
-      summary: 'PLACEHOLDER: one sentence on what it does.',
-      description: [
-        'PLACEHOLDER: a short paragraph about the problem and your approach.',
-      ],
-      stack: ['PLACEHOLDER'],
-      links: [],
     },
   ],
 
@@ -111,11 +70,11 @@ window.CONTENT = {
   skills: [
     {
       group: 'Languages',
-      items: ['PLACEHOLDER', 'PLACEHOLDER', 'PLACEHOLDER', 'Russian', 'English', 'Romanian'],
+      items: ['Russian', 'English', 'Romanian'],
     },
     {
       group: 'Learning',
-      items: ['UTM Cybersecurity', 'PLACEHOLDER'],
+      items: ['UTM Cybersecurity'],
     },
   ],
 
@@ -126,13 +85,6 @@ window.CONTENT = {
     { label: 'instagram', value: 'instagram.com/danuv98', url: 'https://instagram.com/danuv98' },
   ],
 
-  /* ----------------------------------------------------------------- resume */
-  resume: {
-    label: 'danu-cv.pdf',
-    url: 'resume.pdf',        // PLACEHOLDER: drop the PDF next to index.html
-    note: 'PLACEHOLDER: one line on what the CV covers.',
-  },
-
   /* ------------------------------------------------------------- easter eggs */
   /* These feed the hidden commands `sudo hire-me`, `matrix`, `exit` and `danu`. */
   eggs: {
@@ -141,7 +93,7 @@ window.CONTENT = {
       answer: [
         'Access granted. You have unlocked: one enthusiastic candidate.',
         'Throws: curiosity, persistence, and a low tolerance for guesswork.',
-        'Currently studying: PLACEHOLDER — security.',
+        'Currently studying: UTM Cybersecurity.',
         'Contact: https://github.com/danuv98',
       ],
     },

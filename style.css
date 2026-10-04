@@ -8,7 +8,7 @@
    site is declared here; `theme` in the shell simply reports this one. */
 :root,
 [data-theme="github"] {
-  --bg: #0d1117;         /* canvas        */
+  --bg: #000000;         /* canvas        */
   --bg-soft: #161b22;    /* canvas-subtle */
   --fg: #e6edf3;         /* fg-default    */
   --dim: #7d8590;        /* fg-muted      */
@@ -84,10 +84,15 @@ body {
 .block { margin: 0 0 2px; }
 
 .banner {
+  display: block;
+  width: max-content;
+  min-width: 100%;
   margin: 0 0 14px;
   color: var(--green);
   font-size: clamp(6px, 1.75vw, 13px);
   line-height: 1.2;
+  font-variant-ligatures: none;
+  text-align: left;
   white-space: pre;
   overflow-x: auto;
   text-shadow: var(--glow);
@@ -229,11 +234,8 @@ button:focus-visible {
   border-radius: 2px;
 }
 
-/* The blinking block is the caret, so the field needs its own focus ring for
-   keyboard users who arrive here without a pointer. */
-.field:focus-within {
-  box-shadow: 0 0 0 1px var(--accent);
-}
+/* The blinking block cursor indicates focus without drawing a field outline. */
+.field:focus-within { box-shadow: none; }
 
 .input {
   width: 100%;
